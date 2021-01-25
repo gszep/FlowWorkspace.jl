@@ -1,0 +1,13 @@
+name = "FlowWorkspace"
+uuid = "93705cf0-0d0c-4207-9085-aa3a02725bf0"
+authors = ["Gregory Szep"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
