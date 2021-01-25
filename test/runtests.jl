@@ -8,6 +8,6 @@ sample = "data/fcs/101_DEN084Y5_15_E01_008_clean.fcs"
 data, = load(sample)
 data,labels,groups,gating = load(sample; workspace=workspace)
 
-######################################################### files with different channel names
+######################################################### multiple files
 pattern = glob"data/fcs/*.fcs"
 data,labels,groups,gating = load(pattern; workspace=workspace)
