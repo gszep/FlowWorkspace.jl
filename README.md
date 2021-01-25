@@ -11,6 +11,12 @@ Type `] add FlowWorkspace` and then hit ⏎ Return at the REPL. You should see `
 ## Basic Usage
 > :warning: **FCS files under a workspace must have unique names**. This limitation will be removed in future versions
 
+The `load` method returns a tuple of three `DataFrames` and one `Dict`:
+* `data` arcsinh transformed fluorescence values for each event
+* `labels` boolean telling us which events have been gated
+* `groups` booleans telling us which group each event belongs to
+* `gating` Dictionary of graph representations of each gating strategy
+
 ```julia
 using FlowWorkspace
 
