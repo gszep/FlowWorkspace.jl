@@ -1,19 +1,6 @@
 using FlowWorkspace
 using Test
 
-@testset "FlowWorkspace.jl" begin
-
-    @testset "Gating.jl" begin
-        @test true
-    end
-
-
-    @testset "Groups.jl" begin
-        @test true
-    end
-
-
-    @testset "Utils.jl" begin
-        @test true
-    end
-end
+@testset "Gating.jl" begin include("Gating.jl") end
+@testset "Groups.jl" begin include("Groups.jl") end
+@testset "Utils.jl" begin include("Utils.jl") end
