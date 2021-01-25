@@ -2,7 +2,8 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), c
 	workspace = root(readxml(workspace))
 
 	############################################## population names
-	populations = findall("//DataSet[contains(@uri,'$(basename(path))')]/..//Population",workspace)
+	populations =    findall("//DataSet[contains(@uri,'$(basename(path))')]/..//Population",workspace)
+	compensation = findfirst("//DataSet[contains(@uri,'$(basename(path))')]/..//transforms:spilloverMatrix",workspace)
 	@assert( length(populations)>0, "gating not found in workspace for sample\n$path")
 
 	graph = MetaDiGraph{Int64,Bool}() ############# store strategy in graph
@@ -17,40 +18,37 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), c
 		#################### iterate through disconnected polygons
 		for gate ∈ eachelement(Gate)
 			
-			channels = map( dimension-> channelMap[dimension["data-type:name"]],
+			channels = map( dimension -> replace(dimension["data-type:name"], isnothing(compensation) ? "" : compensation["prefix"]=>"") ∈ keys(channelMap) ?
+				channelMap[replace(dimension["data-type:name"], isnothing(compensation) ? "" : compensation["prefix"]=>"")] : throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
 				findall("gating:dimension/data-type:fcs-dimension",gate) )
 			
-			################################# add polygons to graph
-			if ~occursin("threshold",name)
-				@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample\n$path")
+			@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample\n$path")
+			if gate.name == "PolygonGate"
+
+				vertices = map( coordinate-> parse(Float32,coordinate["data-type:value"]),
+					findall("gating:vertex/gating:coordinate",gate) )
+				polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
+
+			elseif gate.name == "RectangleGate"
+
+				minima = map( dimension-> parse(Float32,dimension["gating:min"]),
+					findall("gating:dimension",gate) )
+				maxima = map( dimension-> parse(Float32,dimension["gating:max"]),
+					findall("gating:dimension",gate) )
 				
-				if gate.name == "PolygonGate"
+				polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)),
+					[first(minima),first(minima),first(maxima),first(maxima)],
+					[ last(minima), last(maxima), last(maxima), last(minima)] )
 
-					vertices = map( coordinate-> parse(Float32,coordinate["data-type:value"]),
-						findall("gating:vertex/gating:coordinate",gate) )
-					polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
-
-				elseif gate.name == "RectangleGate"
-
-					minima = map( dimension-> parse(Float32,dimension["gating:min"]),
-						findall("gating:dimension",gate) )
-					maxima = map( dimension-> parse(Float32,dimension["gating:max"]),
-						findall("gating:dimension",gate) )
-					
-					polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)),
-						[first(minima),first(minima),first(maxima),first(maxima)],
-						[ last(minima), last(maxima), last(maxima), last(minima)] )
-
-				end
-				push!(polygon,first(polygon))
-				
-				MetaGraphs.add_vertex!(graph) ################## store gate as vertex
-				set_indexing_prop!( graph, MetaGraphs.nv(graph), :id,id )
-				set_props!( graph, MetaGraphs.nv(graph), Dict(:channels=>channels,:polygon=>polygon,:name=>name) )
-                
-                ################# connect parent gates to children
-				~isnothing(parent_id) && MetaGraphs.add_edge!(graph,graph[parent_id,:id],MetaGraphs.nv(graph))
 			end
+			push!(polygon,first(polygon))
+			
+			MetaGraphs.add_vertex!(graph) ################## store gate as vertex
+			set_indexing_prop!( graph, MetaGraphs.nv(graph), :id,id )
+			set_props!( graph, MetaGraphs.nv(graph), Dict(:channels=>channels,:polygon=>polygon,:name=>name) )
+			
+			################# connect parent gates to children
+			~isnothing(parent_id) && MetaGraphs.add_edge!(graph,graph[parent_id,:id],MetaGraphs.nv(graph))
 		end
     end
     
@@ -85,7 +83,7 @@ end
 function gate(data::DataFrame,gating::MetaDiGraph;prefix::String="__gate__")
 
 	roots = [ idx for idx ∈ 1:MetaGraphs.nv(gating) if MetaGraphs.indegree(gating,idx)==0 ]
-	names = [ prefix*get_prop(gating,idx,:name) for idx ∈ 1:MetaGraphs.nv(gating)]
+	names = unique([ prefix*get_prop(gating,idx,:name) for idx ∈ 1:MetaGraphs.nv(gating)]) # todo @gszep why wrap in unique()? possible bug?
 
 	for idx ∈ roots
 		gate!(data,gating,idx;prefix=prefix)
