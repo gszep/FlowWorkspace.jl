@@ -15,13 +15,13 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
 julia = "1"
-DataFrames = "0"
+DataFrames = "0.20, 0.21, 0.22"
 EzXML = "1"
-GigaSOM = "0"
+GigaSOM = "0.6"
 Glob = "1"
-MetaGraphs = "0"
-Observables = "0"
-PolygonOps = "0"
+MetaGraphs = "0.6"
+Observables = "0.3"
+PolygonOps = "0.1"
 StaticArrays = "1"
 
 [extras]
