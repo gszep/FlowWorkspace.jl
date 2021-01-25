@@ -1,4 +1,4 @@
-function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), cofactor::Number=250)
+function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), transform::Function=x->asinh(x/250))
 	workspace = root(readxml(workspace))
 
 	############################################## population names
@@ -27,7 +27,7 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), c
 
 				vertices = map( coordinate-> parse(Float32,coordinate["data-type:value"]),
 					findall("gating:vertex/gating:coordinate",gate) )
-				polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
+				polygon = map( (x,y)->SVector(transform(x),transform(y)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
 
 			elseif gate.name == "RectangleGate"
 
@@ -36,7 +36,7 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), c
 				maxima = map( dimension-> parse(Float32,dimension["gating:max"]),
 					findall("gating:dimension",gate) )
 				
-				polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)),
+				polygon = map( (x,y)->SVector(transform(x),transform(y)),
 					[first(minima),first(minima),first(maxima),first(maxima)],
 					[ last(minima), last(maxima), last(maxima), last(minima)] )
 

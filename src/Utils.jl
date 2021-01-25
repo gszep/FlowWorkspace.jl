@@ -1,4 +1,4 @@
-function load(path::String; workspace::String="", cofactor::Number=250, channelMap::Dict=Dict(), kwargs...)
+function load(path::String; workspace::String="", transform::Function=x->asinh(x/250), channelMap::Dict=Dict(), kwargs...)
 
 	#######################################
 	path = replace(path,"\\"=>"/")
@@ -25,7 +25,7 @@ function load(path::String; workspace::String="", cofactor::Number=250, channelM
 	rename!(data,channelNames) 
 
 	###################################### biexponential transformation
-	@. data = asinh(data/cofactor)
+	@. data = transform(data)
 	
 	if isempty(workspace)
         return data,nothing,nothing,nothing
@@ -33,7 +33,7 @@ function load(path::String; workspace::String="", cofactor::Number=250, channelM
     else ################################ load metadata from workspace
 
         groups = loadGroups(path,workspace,data)
-		gating = gatingGraph(path,workspace;channelMap=channelNames,cofactor=cofactor)
+		gating = gatingGraph(path,workspace;channelMap=channelNames,transform=transform)
 		labels = gate(data,gating)
 
 		return data,labels,groups,gating
@@ -41,13 +41,13 @@ function load(path::String; workspace::String="", cofactor::Number=250, channelM
 end
 
 
-function load(pattern::GlobMatch; workspace::String="", cofactor::Number=250, channelMap::Dict=Dict(), kwargs...)
+function load(pattern::GlobMatch; workspace::String="", transform::Function=x->asinh(x/250), channelMap::Dict=Dict(), kwargs...)
 
 	data,labels,groups = DataFrame(),DataFrame(),DataFrame()
 	gatings = Dict()
 	
 	for path ∈ readdir(pattern)
-		fcs,label,group,gating = load(path;workspace=workspace,cofactor=cofactor,channelMap=channelMap,kwargs...)
+		fcs,label,group,gating = load(path;workspace=workspace,transform=transform,channelMap=channelMap,kwargs...)
 		
 		append!(data,fcs)
 		gatings[path] = gating
