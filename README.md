@@ -9,7 +9,7 @@ This package provides for loading and parsing of [FlowJo Workspace files](https:
 Type `] add FlowWorkspace` and then hit ⏎ Return at the REPL. You should see `pkg> add FlowWorkspace`.
 
 ## Basic Usage
-> :warning: **FCS files under a single workspace must have unique names**: This limitation will be removed in future versions
+> :warning: **FCS files under a workspace must have unique names** Limitation will be removed in future versions
 
 ```julia
 using FlowWorkspace
