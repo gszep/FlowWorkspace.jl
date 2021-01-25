@@ -22,12 +22,26 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), c
 			
 			################################# add polygons to graph
 			if ~occursin("threshold",name)
-				@assert(gate.name=="PolygonGate", "$(gate.name) not supported for population label $name in sample\n$path")
+				@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample\n$path")
 				
-				vertices = map( coordinate-> parse(Float32,coordinate["data-type:value"]),
-					findall("gating:vertex/gating:coordinate",gate) )
-				
-				polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
+				if gate.name == "PolygonGate"
+
+					vertices = map( coordinate-> parse(Float32,coordinate["data-type:value"]),
+						findall("gating:vertex/gating:coordinate",gate) )
+					polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
+
+				elseif gate.name == "RectangleGate"
+
+					minima = map( dimension-> parse(Float32,dimension["gating:min"]),
+						findall("gating:dimension",gate) )
+					maxima = map( dimension-> parse(Float32,dimension["gating:max"]),
+						findall("gating:dimension",gate) )
+					
+					polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)),
+						[first(minima),first(minima),first(maxima),first(maxima)],
+						[ last(minima), last(maxima), last(maxima), last(minima)] )
+
+				end
 				push!(polygon,first(polygon))
 				
 				MetaGraphs.add_vertex!(graph) ################## store gate as vertex
