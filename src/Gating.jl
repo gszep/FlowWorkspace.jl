@@ -1,38 +1,8 @@
-############################################################################################ 
-############################################################################################
-###################################################################################### types
-
-struct ClosedVector{T} <: AbstractVector{T}
-    x::AbstractVector{T}
-
-    function ClosedVector(x::AbstractVector{T}) where T
-        return new{T}(x)
-    end
-end
-
-struct Gate
-    polygon::Observable{<:ClosedVector}
-    selected::Observable{<:Bool}
-end
-
-Base.size(A::ClosedVector) = (size(A.x,1)+1,)
-Base.length(A::ClosedVector) = length(A.x)+1
-Base.IndexStyle(::Type{ClosedVector}) = IndexCartesian() 
-
-Base.getindex(A::ClosedVector, i::Int) = getindex(A.x, i == length(A) ? 1 : i)
-Base.setindex!(A::ClosedVector, v, i::Int) = setindex!(A.x, v, i == length(A) ? 1 : i) 
-
-Gate(x::AbstractVector{<:StaticVector}) = Gate( (Observable ∘ ClosedVector)(x), Observable(false) )
-Gate(x::Observable{<:ClosedVector}) = Gate(x,Observable(false))
-
-############################################################################################ 
-############################################################################################
-#################################################################################### methods
-
-function gatingGraph(path::String, workspace::EzXML.Node; channelMap::Dict=Dict(), cofactor::Number=250)
+function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), cofactor::Number=250)
+	workspace = root(readxml(workspace))
 
 	############################################## population names
-	populations = findall("//DataSet[contains(@uri,'$path')]/..//Population",workspace)
+	populations = findall("//DataSet[contains(@uri,'$(basename(path))')]/..//Population",workspace)
 	@assert( length(populations)>0, "gating not found in workspace for sample\n$path")
 
 	graph = MetaDiGraph{Int64,Bool}() ############# store strategy in graph
@@ -60,12 +30,12 @@ function gatingGraph(path::String, workspace::EzXML.Node; channelMap::Dict=Dict(
 				polygon = map( (x,y)->SVector(asinh(x/cofactor),asinh(y/cofactor)), @view(vertices[1:2:end]), @view(vertices[2:2:end]) )
 				push!(polygon,first(polygon))
 				
-				add_vertex!(graph) ################## store gate as vertex
-				set_indexing_prop!( graph,nv(graph), :id,id )
-				set_props!( graph,nv(graph), Dict(:channels=>channels,:polygon=>polygon,:name=>name) )
+				MetaGraphs.add_vertex!(graph) ################## store gate as vertex
+				set_indexing_prop!( graph, MetaGraphs.nv(graph), :id,id )
+				set_props!( graph, MetaGraphs.nv(graph), Dict(:channels=>channels,:polygon=>polygon,:name=>name) )
                 
                 ################# connect parent gates to children
-				~isnothing(parent_id) && add_edge!(graph,graph[parent_id,:id],nv(graph))
+				~isnothing(parent_id) && MetaGraphs.add_edge!(graph,graph[parent_id,:id],MetaGraphs.nv(graph))
 			end
 		end
     end
@@ -87,12 +57,12 @@ function gate!(data::DataFrame,gating::MetaDiGraph,idx::Integer;prefix::String="
 	name = prefix*get_prop(gating,idx,:name)
 	transform!( data, gate(gating,idx;prefix=prefix) )
 
-	for parent ∈ inneighbors(gating,idx) ######### todo @gszep does not support multiple parents
+	for parent ∈ MetaGraphs.inneighbors(gating,idx) ######### todo @gszep does not support multiple parents
 		parent = prefix*get_prop(gating,parent,:name)
 		transform!(data, [name,parent] => ByRow((x,y)->x&y) => name)
 	end
 	
-	for child ∈ outneighbors(gating,idx)
+	for child ∈ MetaGraphs.outneighbors(gating,idx)
 		gate!(data,gating,child;prefix=prefix)
 	end
 end
@@ -100,8 +70,8 @@ end
 
 function gate(data::DataFrame,gating::MetaDiGraph;prefix::String="__gate__")
 
-	roots = [ idx for idx ∈ 1:nv(gating) if indegree(gating,idx)==0 ]
-	names = [ prefix*get_prop(gating,idx,:name) for idx ∈ 1:nv(gating)]
+	roots = [ idx for idx ∈ 1:MetaGraphs.nv(gating) if MetaGraphs.indegree(gating,idx)==0 ]
+	names = [ prefix*get_prop(gating,idx,:name) for idx ∈ 1:MetaGraphs.nv(gating)]
 
 	for idx ∈ roots
 		gate!(data,gating,idx;prefix=prefix)

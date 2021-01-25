@@ -32,9 +32,7 @@ function load(path::String; workspace::String="", cofactor::Number=250, channelM
 
     else ################################ load metadata from workspace
 
-		workspace = root(readxml(workspace))
         groups = loadGroups(path,workspace,data)
-
 		gating = gatingGraph(path,workspace;channelMap=channelNames,cofactor=cofactor)
 		labels = gate(data,gating)
 
@@ -68,5 +66,5 @@ function load(pattern::GlobMatch; workspace::String="", cofactor::Number=250, ch
 	disallowmissing!(labels)
 	disallowmissing!(groups)
 
-	return data,labels, groups,gatings
+	return data,labels,groups,gatings
 end
