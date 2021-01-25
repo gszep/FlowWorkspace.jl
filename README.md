@@ -1,5 +1,5 @@
 # FlowWorkspace.jl
-This package provides for loading and parsing of [FlowJo Workspace files](https://docs.flowjo.com/flowjo/workspaces-and-samples/ws-savinganalysis) in pure Julia. Together with [GigaSOM.jl](https://github.com/LCSB-BioCore/GigaSOM.jl) this data can be used to generate event-level labels for `FCS` datasets.
+This package provides for loading and parsing of [FlowJo Workspace files](https://docs.flowjo.com/flowjo/workspaces-and-samples/ws-savinganalysis) in pure Julia. The gating strategy is parsed as a `DiMetaGraph` and group membership as `Dict`. Together with [GigaSOM.jl](https://github.com/LCSB-BioCore/GigaSOM.jl) this metadata can be used to generate event-level labels for `FCS` datasets.
 
 [![Build Status](https://travis-ci.com/gszep/FlowWorkspace.jl.svg?branch=master)](https://travis-ci.com/gszep/FlowWorkspace.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/gszep/FlowWorkspace.jl?svg=true)](https://ci.appveyor.com/project/gszep/FlowWorkspace-jl)
