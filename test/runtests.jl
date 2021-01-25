@@ -1,6 +1,13 @@
 using FlowWorkspace
 using Test
 
-@testset "Gating.jl" begin include("Gating.jl") end
-@testset "Groups.jl" begin include("Groups.jl") end
-@testset "Utils.jl" begin include("Utils.jl") end
+######################################################### load single file
+workspace = "data/workspace.wsp"
+sample = "data/fcs/101_DEN084Y5_15_E01_008_clean.fcs"
+
+data, = load(sample)
+data,labels,groups,gating = load(sample; workspace=workspace)
+
+######################################################### files with different channel names
+pattern = glob"data/fcs/*.fcs"
+data,labels,groups,gating = load(pattern; workspace=workspace)
