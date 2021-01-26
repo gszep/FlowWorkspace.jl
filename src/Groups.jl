@@ -2,7 +2,7 @@ function loadGroups(path::String, workspace::String, data::DataFrame)
 
     workspace = root(readxml(workspace))
     sample = findfirst("//DataSet[contains(@uri,'$(basename(path))')]",workspace)
-    if ~isnothing(sample)
+    if sample !== nothing
 
         return DataFrame([ (group["name"]=>fill(true,size(data,1))) for group ∈ 
             findall("""//SampleRefs/SampleRef[contains(@sampleID,'$(sample["sampleID"])')]/../..""",workspace)

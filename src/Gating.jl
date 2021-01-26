@@ -18,8 +18,8 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 		#################### iterate through disconnected polygons
 		for gate ∈ eachelement(Gate)
 			
-			channels = map( dimension -> replace(dimension["data-type:name"], isnothing(compensation) ? "" : compensation["prefix"]=>"") ∈ keys(channelMap) ?
-				channelMap[replace(dimension["data-type:name"], isnothing(compensation) ? "" : compensation["prefix"]=>"")] : throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
+			channels = map( dimension -> replace(dimension["data-type:name"], compensation === nothing ? "" : compensation["prefix"]=>"") ∈ keys(channelMap) ?
+				channelMap[replace(dimension["data-type:name"], compensation === nothing ? "" : compensation["prefix"]=>"")] : throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
 				findall("gating:dimension/data-type:fcs-dimension",gate) )
 			
 			@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample\n$path")
@@ -48,7 +48,7 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 			set_props!( graph, MetaGraphs.nv(graph), Dict(:channels=>channels,:polygon=>polygon,:name=>name) )
 			
 			################# connect parent gates to children
-			~isnothing(parent_id) && MetaGraphs.add_edge!(graph,graph[parent_id,:id],MetaGraphs.nv(graph))
+			(parent_id !== nothing) && MetaGraphs.add_edge!(graph,graph[parent_id,:id],MetaGraphs.nv(graph))
 		end
     end
     
