@@ -50,10 +50,13 @@ function load(pattern::GlobMatch; workspace::String="", transform::Function=x->a
 		fcs,label,group,gating = load(path;workspace=workspace,transform=transform,channelMap=channelMap,kwargs...)
 		
 		append!(data,fcs)
-		gatings[path] = gating
 
-		append!(labels,label,cols=:union)
-		append!(groups,group,cols=:union)		
+		if ~isempty(workspace)
+			gatings[path] = gating
+
+			append!(labels,label,cols=:union)
+			append!(groups,group,cols=:union)
+		end
 	end
 
 	if isempty(workspace)

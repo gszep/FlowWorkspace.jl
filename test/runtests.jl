@@ -10,4 +10,5 @@ data,labels,groups,gating = load(sample; workspace=workspace)
 
 ######################################################### multiple files
 pattern = glob"./data/fcs/*.fcs"
+data,_ = load(pattern)
 data,labels,groups,gating = load(pattern; workspace=workspace)
