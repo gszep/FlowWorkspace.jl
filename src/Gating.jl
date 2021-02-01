@@ -18,11 +18,13 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 		#################### iterate through disconnected polygons
 		for gate ∈ eachelement(Gate)
 			
-			channels = map( dimension -> replace(dimension["data-type:name"], compensation === nothing ? "" : compensation["prefix"]=>"") ∈ keys(channelMap) ?
-				channelMap[replace(dimension["data-type:name"], compensation === nothing ? "" : compensation["prefix"]=>"")] : throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
+			channels = map( dimension -> replace(dimension["data-type:name"], compensation === nothing ? " "=>" " : compensation["prefix"]=>"") ∈ keys(channelMap) ?
+				channelMap[replace(dimension["data-type:name"], compensation === nothing ? " "=>" " : compensation["prefix"]=>"")] : throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
 				findall("gating:dimension/data-type:fcs-dimension",gate) )
 			
 			@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample\n$path")
+			@assert(length(channels) ≤ 2, "length($channels)>2 in $(gate.name) not supported for population label $name in sample\n$path")
+
 			if gate.name == "PolygonGate"
 
 				vertices = map( coordinate-> parse(Float32,coordinate["data-type:value"]),
@@ -38,8 +40,7 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 				
 				polygon = map( (x,y)->SVector(transform(x),transform(y)),
 					[first(minima),first(minima),first(maxima),first(maxima)],
-					[ last(minima), last(maxima), last(maxima), last(minima)] )
-
+					length(channels) == 1 ? [ -Inf, Inf, Inf, -Inf] : [ last(minima), last(maxima), last(maxima), last(minima)] )
 			end
 			push!(polygon,first(polygon))
 			
@@ -57,11 +58,13 @@ end
 
 
 function gate(graph::MetaDiGraph,idx::Integer;prefix::String="__gate__")
-	return get_prop(graph,idx,:channels) =>
+	channels, gateName = get_prop(graph,idx,:channels), prefix*get_prop(graph,idx,:name)
+
+	return [first(channels),last(channels)] =>
 		ByRow( (x,y)->inpolygon( SVector(x,y), get_prop(graph,idx,:polygon);
 
 			in=true, on=false, out=false)
-	) => prefix*get_prop(graph,idx,:name)
+	) => gateName
 end
 
 
