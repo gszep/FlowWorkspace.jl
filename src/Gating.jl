@@ -1,6 +1,9 @@
 function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), transform::Function=x->asinh(x/250))
 	workspace = root(readxml(workspace))
 
+	datasets = map( dataset -> basename(dataset["uri"]), findall("//DataSet",workspace) )
+	@assert( length(datasets) == length(unique(datasets)), "FCS files under a workspace must have unique names. This limitation will be removed in future versions" )
+
 	############################################## population names
 	populations =    findall("//DataSet[contains(@uri,'$(basename(path))')]/..//Population",workspace)
 	compensation = findfirst("//DataSet[contains(@uri,'$(basename(path))')]/..//transforms:spilloverMatrix",workspace)
