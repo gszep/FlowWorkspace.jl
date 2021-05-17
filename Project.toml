@@ -13,7 +13,7 @@ PolygonOps = "647866c9-e3ac-4575-94e7-e3d426903924"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
-DataFrames = "0.20, 0.21, 0.22, 1.1"
+DataFrames = "0.20, 0.21, 0.22, 1.0, 1.1"
 EzXML = "1"
 GigaSOM = "0.6"
 Glob = "1"

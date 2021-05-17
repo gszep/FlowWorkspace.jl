@@ -1,5 +1,5 @@
 function loadGroups(path::String, workspace::String, data::DataFrame)
-    path = basename(path).replace("%20"," ")
+    path = replace(basename(path),"%20"=>" ")
 
     workspace = root(readxml(workspace))
     sample = findfirst("//DataSet[contains(@uri,'$path')]",workspace)
