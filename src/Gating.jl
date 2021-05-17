@@ -1,12 +1,13 @@
 function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), transform::Function=x->asinh(x/250))
 	workspace = root(readxml(workspace))
+	path = basename(path).replace("%20"," ")
 
 	datasets = map( dataset -> basename(dataset["uri"]), findall("//DataSet",workspace) )
 	@assert( length(datasets) == length(unique(datasets)), "FCS files under a workspace must have unique names. This limitation will be removed in future versions" )
 
 	############################################## population names
-	populations =    findall("//DataSet[contains(@uri,'$(basename(path))')]/..//Population",workspace)
-	compensation = findfirst("//DataSet[contains(@uri,'$(basename(path))')]/..//transforms:spilloverMatrix",workspace)
+	populations =    findall("//DataSet[contains(@uri,'$path')]/..//Population",workspace)
+	compensation = findfirst("//DataSet[contains(@uri,'$path')]/..//transforms:spilloverMatrix",workspace)
 	@assert( length(populations)>0, "gating not found in workspace for sample\n$path")
 
 	graph = MetaDiGraph{Int64,Bool}() ############# store strategy in graph
