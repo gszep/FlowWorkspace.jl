@@ -1,7 +1,7 @@
 name = "FlowWorkspace"
 uuid = "93705cf0-0d0c-4207-9085-aa3a02725bf0"
 authors = ["Gregory Szep"]
-version = "0.1.5"
+version = "0.1.6"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
