@@ -45,8 +45,12 @@ function load(pattern::GlobMatch; workspace::String="", transform::Function=x->a
 
 	data,labels,groups = DataFrame(),DataFrame(),DataFrame()
 	gatings = Dict()
+
+	paths = readdir(pattern)
+	@assert( length(paths) ≠ 0, "no files found using pattern $pattern" )
 	
-	for path ∈ readdir(pattern)
+	for path ∈ paths
+		@info "Loading $path"
 		fcs,label,group,gating = load(path;workspace=workspace,transform=transform,channelMap=channelMap,kwargs...)
 		
 		append!(data,fcs,cols=cols)
