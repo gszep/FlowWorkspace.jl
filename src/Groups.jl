@@ -1,7 +1,13 @@
 function loadGroups(path::String, workspace::String, data::DataFrame)
     path = replace(basename(path),"%20"=>" ")
 
-    workspace = root(readxml(workspace))
+    try 
+        workspace = root(readxml(workspace))
+    catch
+        @warn("""Workspace not loaded $workspace""")
+        return DataFrame("__missing__"=>missings(Bool,size(data,1)))
+    end
+
     sample = findfirst("//DataSet[contains(@uri,'$path')]",workspace)
     if sample !== nothing
 
@@ -9,6 +15,7 @@ function loadGroups(path::String, workspace::String, data::DataFrame)
             findall("""//SampleRefs/SampleRef[@sampleID='$(sample["sampleID"])']/../..""",workspace)
                 if  group["name"] ≠ "All Samples" ])
     else 
-        return nothing
+        @warn("""No metadata found for sample $path in workspace $workspace""")
+        return DataFrame("__missing__"=>missings(Bool,size(data,1)))
     end
 end

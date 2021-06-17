@@ -1,6 +1,16 @@
 function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), transform::Function=x->asinh(x/250))
-	workspace = root(readxml(workspace))
+
+ 	############# store strategy in graph
 	path = replace(basename(path),"%20"=>" ")
+	graph = MetaDiGraph{Int64,Bool}()
+	set_props!(graph,Dict(:sample=>path))
+
+    try 
+        workspace = root(readxml(workspace))
+    catch
+        @warn("""Workspace not loaded $workspace""")
+        return graph
+    end
 
 	datasets = map( dataset -> basename(dataset["uri"]), findall("//DataSet",workspace) )
 	@assert( length(datasets) == length(unique(datasets)), "FCS files under a workspace must have unique names. This limitation will be removed in future versions" )
@@ -8,10 +18,11 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 	############################################## population names
 	populations =    findall("//DataSet[contains(@uri,'$path')]/..//Population",workspace)
 	compensation = findfirst("//DataSet[contains(@uri,'$path')]/..//transforms:spilloverMatrix",workspace)
-	@assert( length(populations)>0, "gating not found in workspace for sample\n$path")
 
-	graph = MetaDiGraph{Int64,Bool}() ############# store strategy in graph
-	set_props!(graph,Dict(:sample=>path))
+	if length(populations)==0
+		@warn("gating not found in workspace for sample\n$path")
+		return graph
+	end
 
 	for population ∈ populations
 		Gate,name = findfirst("Gate",population), population["name"]
@@ -37,9 +48,9 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 
 			elseif gate.name == "RectangleGate"
 
-				minima = map( dimension-> parse(Float32,dimension["gating:min"]),
+				minima = map( dimension-> haskey(dimension,"gating:min") ? parse(Float32,dimension["gating:min"]) : -Inf,
 					findall("gating:dimension",gate) )
-				maxima = map( dimension-> parse(Float32,dimension["gating:max"]),
+				maxima = map( dimension-> haskey(dimension,"gating:max") ? parse(Float32,dimension["gating:max"]) : Inf,
 					findall("gating:dimension",gate) )
 				
 				polygon = map( (x,y)->SVector(transform(x),transform(y)),
@@ -91,6 +102,10 @@ function gate(data::DataFrame,gating::MetaDiGraph;prefix::String="__gate__")
 
 	roots = [ idx for idx ∈ 1:MetaGraphs.nv(gating) if MetaGraphs.indegree(gating,idx)==0 ]
 	names = unique([ prefix*get_prop(gating,idx,:name) for idx ∈ 1:MetaGraphs.nv(gating)]) # todo @gszep why wrap in unique()? possible bug?
+
+	if length(roots) == 0
+		return DataFrame("__missing__"=>missings(Bool,size(data,1)))
+	end
 
 	for idx ∈ roots
 		gate!(data,gating,idx;prefix=prefix)

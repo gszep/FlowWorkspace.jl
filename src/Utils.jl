@@ -26,18 +26,13 @@ function load(path::String; workspace::String="", transform::Function=x->asinh(x
 
 	###################################### biexponential transformation
 	@. data = transform(data)
-	
-	if isempty(workspace)
-        return data,nothing,nothing,nothing
 
-    else ################################ load metadata from workspace
+    ################################ load metadata from workspace
+	groups = loadGroups(path,workspace,data)
+	gating = gatingGraph(path,workspace;channelMap=channelNames,transform=transform)
+	labels = gate(data,gating)
 
-        groups = loadGroups(path,workspace,data)
-		gating = gatingGraph(path,workspace;channelMap=channelNames,transform=transform)
-		labels = gate(data,gating)
-
-		return data,labels,groups,gating
-    end
+	return data,labels,groups,gating
 end
 
 
@@ -54,17 +49,9 @@ function load(pattern::GlobMatch; workspace::String="", transform::Function=x->a
 		fcs,label,group,gating = load(path;workspace=workspace,transform=transform,channelMap=channelMap,kwargs...)
 		
 		append!(data,fcs,cols=cols)
-
-		if ~isempty(workspace)
-			gatings[path] = gating
-
-			append!(labels,label,cols=:union)
-			append!(groups,group,cols=:union)
-		end
-	end
-
-	if isempty(workspace)
-		return data,nothing,nothing,nothing
+		append!(labels,label,cols=:union)
+		append!(groups,group,cols=:union)
+		gatings[path] = gating
 	end
 
 	map( name->replace!(data[!,name],missing=>0.0), names(data) )
@@ -74,6 +61,9 @@ function load(pattern::GlobMatch; workspace::String="", transform::Function=x->a
 	disallowmissing!(data)
 	disallowmissing!(labels)
 	disallowmissing!(groups)
+
+	"__missing__" ∈ names(labels) && select!(labels,Not("__missing__"))
+	"__missing__" ∈ names(groups) && select!(groups,Not("__missing__"))
 
 	return data,labels,groups,gatings
 end
