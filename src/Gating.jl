@@ -104,7 +104,7 @@ function gate(data::DataFrame,gating::MetaDiGraph;prefix::String="__gate__")
 	names = unique([ prefix*get_prop(gating,idx,:name) for idx ∈ 1:MetaGraphs.nv(gating)]) # todo @gszep why wrap in unique()? possible bug?
 
 	if length(roots) == 0
-		return DataFrame("__missing__"=>missings(Bool,size(data,1)))
+		return DataFrame("Unlabelled"=>fill(true,size(data,1)))
 	end
 
 	for idx ∈ roots

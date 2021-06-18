@@ -60,10 +60,10 @@ function load(pattern::GlobMatch; workspace::String="", transform::Function=x->a
 
 	disallowmissing!(data)
 	disallowmissing!(labels)
-	disallowmissing!(groups)
+	disallowmissing!(groups)	
 
-	"__missing__" ∈ names(labels) && select!(labels,Not("__missing__"))
-	"__missing__" ∈ names(groups) && select!(groups,Not("__missing__"))
+	transform!( labels, AsTable(filter(x->x≠"Unlabelled",names(labels))) => ByRow(x->~any(x)) => "Unlabelled" )
+	transform!( groups, AsTable(filter(x->x≠"Ungrouped",names(groups))) =>  ByRow(x->~any(x)) => "Ungrouped" )
 
 	return data,labels,groups,gatings
 end
