@@ -4,11 +4,12 @@ module FlowWorkspace
     using EzXML,MetaGraphs
 
     using PolygonOps, StaticArrays
-    using Glob: GlobMatch, @glob_str
+    using Glob: glob
+    using HTTP: escapeuri
 
     include("Groups.jl")
     include("Gating.jl")
     include("Utils.jl")
 
-    export load, @glob_str
+    export load
 end

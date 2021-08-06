@@ -1,13 +1,14 @@
 name = "FlowWorkspace"
 uuid = "93705cf0-0d0c-4207-9085-aa3a02725bf0"
 authors = ["Gregory Szep"]
-version = "0.1.9"
+version = "0.1.10"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 GigaSOM = "a03a9c34-069e-5582-a11c-5c984cab887c"
 Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 MetaGraphs = "626554b9-1ddb-594c-aa3c-2596fe9399a5"
 PolygonOps = "647866c9-e3ac-4575-94e7-e3d426903924"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
@@ -17,6 +18,7 @@ DataFrames = "0.20, 0.21, 0.22, 1.0, 1.1"
 EzXML = "1"
 GigaSOM = "0.6"
 Glob = "1"
+HTTP = "0.9"
 MetaGraphs = "0.6"
 PolygonOps = "0.1"
 StaticArrays = "1"

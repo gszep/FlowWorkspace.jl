@@ -1,26 +1,15 @@
-function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), transform::Function=x->asinh(x/250))
+function gatingGraph(sample::EzXML.Node; channelMap::Dict=Dict(), transform::Function=x->asinh(x/250))
 
  	############# store strategy in graph
-	path = replace(basename(path),"%20"=>" ")
+	name = findfirst("../SampleNode",sample)["name"]
 	graph = MetaDiGraph{Int64,Bool}()
-	set_props!(graph,Dict(:sample=>path))
-
-    try 
-        workspace = root(readxml(workspace))
-    catch
-        @warn("""Workspace not loaded $workspace""")
-        return graph
-    end
-
-	datasets = map( dataset -> basename(dataset["uri"]), findall("//DataSet",workspace) )
-	@assert( length(datasets) == length(unique(datasets)), "FCS files under a workspace must have unique names. This limitation will be removed in future versions" )
+	set_props!(graph,Dict(:sample=>name))
 
 	############################################## population names
-	populations =    findall("//DataSet[contains(@uri,'$path')]/..//Population",workspace)
-	compensation = findfirst("//DataSet[contains(@uri,'$path')]/..//transforms:spilloverMatrix",workspace)
-
+	populations = findall("..//Population",sample)
 	if length(populations)==0
-		@warn("gating not found in workspace for sample\n$path")
+
+		@warn("no populations found")
 		return graph
 	end
 
@@ -33,12 +22,12 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
 		#################### iterate through disconnected polygons
 		for gate ∈ eachelement(Gate)
 			
-			channels = map( dimension -> replace(dimension["data-type:name"], compensation === nothing ? " "=>" " : compensation["prefix"]=>"") ∈ keys(channelMap) ?
-				channelMap[replace(dimension["data-type:name"], compensation === nothing ? " "=>" " : compensation["prefix"]=>"")] : throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
+			channels = map( dimension -> dimension["data-type:name"] ∈ keys(channelMap) ? channelMap[dimension["data-type:name"]]
+				: throw("""$(dimension["data-type:name"]) not found in channels $(keys(channelMap))"""),
 				findall("gating:dimension/data-type:fcs-dimension",gate) )
 			
-			@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample\n$path")
-			@assert(length(channels) ≤ 2, "length($channels)>2 in $(gate.name) not supported for population label $name in sample\n$path")
+			@assert(gate.name ∈ ["PolygonGate","RectangleGate"], "$(gate.name) not supported for population label $name in sample")
+			@assert(length(channels) ≤ 2, "length($channels)>2 in $(gate.name) not supported for population label $name in sample")
 
 			if gate.name == "PolygonGate"
 
@@ -69,6 +58,11 @@ function gatingGraph(path::String, workspace::String; channelMap::Dict=Dict(), t
     end
     
     return graph
+end
+
+
+function gatingGraph(sample::Nothing; kwargs...)
+   return MetaDiGraph{Int64,Bool}()
 end
 
 
