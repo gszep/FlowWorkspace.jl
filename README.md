@@ -19,5 +19,6 @@ The `load` method returns a tuple of three `DataFrames` and one `Dict`:
 
 ```julia
 using FlowWorkspace
-data,labels,groups,gating = load("workspace.wsp"; files="*.fcs")
+transform(x) = asinh(x/250)
+data,labels,groups,gating = load("workspace.wsp"; files="*.fcs", transform=transform, cols=:setequal)
 ```
