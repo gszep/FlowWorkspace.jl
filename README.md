@@ -19,21 +19,5 @@ The `load` method returns a tuple of three `DataFrames` and one `Dict`:
 
 ```julia
 using FlowWorkspace
-
-######################################################### load single file
-workspace = "workspace.wsp"
-sample = "workspace/data.fcs"
-data,labels,groups,gating = load(sample; workspace=workspace)
-
-######################################################### load multiple files with different channel names
-channelMap = Dict([
-
-    "FJComp-355 820_60-A"=>"CD4",
-    "FJComp-355 670_30-A"=>"CD4",
-    "Foxp3-IgM"=>"Foxp3",
-    ...
-])
-
-pattern = glob"workspace/*.fcs"
-data,labels,groups,gating = load(pattern; workspace=workspace, channelMap=channelMap)
+data,labels,groups,gating = load("workspace.wsp"; files="*.fcs")
 ```
