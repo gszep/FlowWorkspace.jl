@@ -68,7 +68,7 @@ end
 function findsample(uri::String,workspace::EzXML.Node)
 	uri = escapeuri(uri)
 
-	for code ∈ [("%2F"=>"/"), ("%5C"=>"\\"), ("%3A"=>":")]
+	for code ∈ [("%2F"=>"/"), ("%5C"=>"\\"), ("%3A"=>":"), ("%2C"=>",")]
 		uri = replace(uri, code)
 	end
 
