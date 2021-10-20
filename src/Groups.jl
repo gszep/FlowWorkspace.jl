@@ -1,7 +1,6 @@
 function loadGroups(data::DataFrame, sample::EzXML.Node)
-    return DataFrame([ (group["name"]=>fill(true,size(data,1))) for group ∈ 
-        findall("""//SampleRefs/SampleRef[@sampleID='$(sample["sampleID"])']/../..""",sample)
-            if  group["name"] ≠ "All Samples" ])
+    groups = filter(group-> group["name"] ≠ "All Samples", findall("""//SampleRefs/SampleRef[@sampleID='$(sample["sampleID"])']/../..""",sample))
+    return length(groups) ≠ 0 ? DataFrame([ (group["name"]=>fill(true,size(data,1))) for group ∈ groups ]) : loadGroups(data,nothing)
 end
 
 function loadGroups(data::DataFrame, sample::Nothing)
