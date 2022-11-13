@@ -1,14 +1,13 @@
-function transforms(sample::EzXML.Node)
+function transforms(sample::EzXML.Node; channelMap::Dict=Dict())
+    return Dict(map((eachelement ∘ findfirst)("../Transformations", sample)) do transform
 
-    map((eachelement ∘ findfirst)("../Transformations", sample)) do transform
-        channel = findfirst("data-type:parameter", transform)["data-type:name"]
+        parameter = findfirst("data-type:parameter", transform)
+        channelName = channelMap[parameter["data-type:name"]]
 
         transform_name = Symbol(transform.name)
         params = Dict(Symbol(a.name) => parse(Float64, nodecontent(a)) for a in attributes(transform))
-
-        println(channel)
-        return eval(:($transform_name(; $params...)))
-    end
+        return channelName => eval(:($transform_name(; $params...)))
+    end)
 end
 
 """
@@ -26,8 +25,8 @@ function biex_table(; width::Real=-10, neg::Real=0, pos::Real=4.418540, maxRange
     decades = pos - (width / 2)
     extra = max(neg, 0) + (width / 2)
 
-    zero_point = (Int ∘ floor)((extra * channelRange) / (extra + decades))
-    zero_point = (Int ∘ floor)(min(zero_point, channelRange / 2))
+    zero_point = round(Int, (extra * channelRange) / (extra + decades))
+    zero_point = round(Int, min(zero_point, channelRange / 2))
 
     if zero_point > 0
         decades = extra * channelRange / zero_point
@@ -61,7 +60,7 @@ function _log_root(b, w)
     x_lo = 0
     x_hi = b
     d = (x_lo + x_hi) / 2
-    dx = abs((Int ∘ floor)(x_lo - x_hi))
+    dx = abs(round(Int, x_lo - x_hi))
     dx_last = dx
     fb = -2 * log(b) + w * b
     f = 2.0 * log(d) + w * b + fb
@@ -71,7 +70,7 @@ function _log_root(b, w)
         return b
     end
 
-    for i in range(0, 99)
+    for i in 0:99
         if ((((d - x_hi) * df - f) - ((d - x_lo) * df - f)) > 0) || (abs(2 * f) > abs(dx_last * df))
             dx = (x_hi - x_lo) / 2
             d = x_lo + dx
@@ -87,7 +86,6 @@ function _log_root(b, w)
             end
         end
 
-        # if abs(int(dx)) < 1.0E-12:
         if abs(dx) < 1.0E-12
             return d
         end

@@ -7,17 +7,16 @@ function load(path::String, sample::Union{EzXML.Node,Nothing}; transform::Functi
     ###################################### data with human readable channel names
     channels = dropmissing(params, "E")
     transform!(channels, ["N", "S"] => ByRow((N, S) -> ~ismissing(S) ? S != "" ? S : N : N) => "name")
-    data = DataFrame(data, channels.name)
+    channelMap = Dict(param.N => ismissing(param.S) ? param.N : param.S for param ∈ eachrow(params))
 
     ###################################### biexponential transformation
-    transforms(sample)
-    @. data = transform(data)
+    data = DataFrame(data, channels.name)
+    transformationFunctions = transforms(sample; channelMap=channelMap)
+    transform!(data, [channel => ByRow(func) => channel for (channel, func) ∈ transformationFunctions]...)
 
     ################################ load metadata from workspace
     groups = loadGroups(data, sample)
-    gating = gatingGraph(sample; transform=transform,
-        channelMap=Dict(param.N => ismissing(param.S) ? param.N : param.S for param ∈ eachrow(params))
-    )
+    gating = gatingGraph(sample; transforms=transformationFunctions, channelMap=channelMap)
 
     labels = gate(data, gating)
     return data, labels, groups, gating
