@@ -6,8 +6,24 @@ function transforms(sample::EzXML.Node; channelMap::Dict=Dict())
 
         transform_name = Symbol(transform.name)
         params = Dict(Symbol(a.name) => parse(Float64, nodecontent(a)) for a in attributes(transform))
-        return channelName => eval(:($transform_name(; $params...)))
+        try
+            return channelName => eval(:($transform_name(; $params...)))
+        catch error
+            throw("$transform_name transform not implemented")
+        end
     end)
+end
+
+"""
+FlowJo compatible linear transformation function
+"""
+function linear(; params...)
+    return linear_interpolation(linear_table(; params...)...; extrapolation_bc=Flat())
+end
+
+function linear_table(; minRange::Real=0, maxRange::Real=262144, gain::Real=1)
+    x = range(minRange, maxRange)
+    return x, gain * x
 end
 
 """
