@@ -1,6 +1,6 @@
 module FlowWorkspace
 
-using GigaSOM, DataFrames
+using DataFrames, FCSFiles, FileIO
 using Interpolations, EzXML, MetaGraphs
 
 using PolygonOps, StaticArrays
