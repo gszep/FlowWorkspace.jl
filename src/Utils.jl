@@ -1,4 +1,4 @@
-function load(path::String, sample::Union{EzXML.Node,Nothing}; transform::Function=x -> asinh(x / 250), kwargs...)
+function load(path::String, sample::Union{EzXML.Node,Nothing}; kwargs...)
 
     #######################################
     params, data = loadFCS(path; kwargs...)
@@ -23,7 +23,7 @@ function load(path::String, sample::Union{EzXML.Node,Nothing}; transform::Functi
 end
 
 
-function load(path::String; files::String=joinpath(dirname(path), "*.fcs"), transform::Function=x -> asinh(x / 250), cols::Symbol=:setequal, kwargs...)
+function load(path::String; files::String=joinpath(dirname(path), "*.fcs"), cols::Symbol=:setequal, kwargs...)
 
     @assert(isfile(path), "no such file: $path")
     @assert(length(glob(files)) ≠ 0, "no FCS files found using pattern: $files")
@@ -45,7 +45,7 @@ function load(path::String; files::String=joinpath(dirname(path), "*.fcs"), tran
         @info "Loading $path"
         sample = findsample(path, workspace)
 
-        fcs, label, group, gating = load(path, sample; transform=transform, kwargs...)
+        fcs, label, group, gating = load(path, sample; kwargs...)
 
         append!(data, fcs, cols=cols)
         append!(labels, label, cols=:union)

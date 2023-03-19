@@ -18,7 +18,7 @@ end
 FlowJo compatible linear transformation function
 """
 function linear(; params...)
-    return LinearInterpolation(linear_table(; params...)...; extrapolation_bc=Flat())
+    return linear_interpolation(linear_table(; params...)...; extrapolation_bc=Flat())
 end
 
 function linear_table(; minRange::Real=0, maxRange::Real=262144, gain::Real=1)
@@ -31,7 +31,7 @@ FlowJo compatible biex transformation function
 Implementation adapted from the FlowKit Python library
 """
 function biex(; params...)
-    return LinearInterpolation(biex_table(; params...)...; extrapolation_bc=Flat())
+    return linear_interpolation(biex_table(; params...)...; extrapolation_bc=Flat())
 end
 
 function biex_table(; width::Real=-10, neg::Real=0, pos::Real=4.418540, maxRange::Real=262144, channelRange::Real=4096, length::Real=256)
