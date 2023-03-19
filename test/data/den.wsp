@@ -123,30 +123,30 @@
              <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
                <data-type:parameter data-type:name="FSC-W" />
              </transforms:linear>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             <transforms:linear>
                <data-type:parameter data-type:name="Aqua Amine FLR-A" />
-             </transforms:logicle>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             </transforms:linear>
+             <transforms:linear>
                <data-type:parameter data-type:name="CD8 PerCP-Cy55 FLR-A" />
-             </transforms:logicle>
+             </transforms:linear>
              <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
                <data-type:parameter data-type:name="SSC-H" />
              </transforms:linear>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             <transforms:linear>
                <data-type:parameter data-type:name="CD107a PE FLR-A" />
-             </transforms:logicle>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             </transforms:linear>
+             <transforms:linear>
                <data-type:parameter data-type:name="CD3 APC-H7 FLR-A" />
-             </transforms:logicle>
+             </transforms:linear>
              <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
                <data-type:parameter data-type:name="FSC-A" />
              </transforms:linear>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             <transforms:linear>
                <data-type:parameter data-type:name="IL2 BV421 FLR-A" />
-             </transforms:logicle>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             </transforms:linear>
+             <transforms:linear>
                <data-type:parameter data-type:name="CD4 PE-Cy7 FLR-A" />
-             </transforms:logicle>
+             </transforms:linear>
              <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
                <data-type:parameter data-type:name="SSC-A" />
              </transforms:linear>
@@ -156,12 +156,12 @@
              <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
                <data-type:parameter data-type:name="SSC-W" />
              </transforms:linear>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             <transforms:linear>
                <data-type:parameter data-type:name="IFNg APC FLR-A" />
-             </transforms:logicle>
-             <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+             </transforms:linear>
+             <transforms:linear>
                <data-type:parameter data-type:name="TNFa FITC FLR-A" />
-             </transforms:logicle>
+             </transforms:linear>
            </Transforms>
          </MatrixID>
        </TransformStore>
@@ -2364,57 +2364,57 @@
          <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
            <data-type:parameter data-type:name="SSC-W" />
          </transforms:linear>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         <transforms:linear>
            <data-type:parameter data-type:name="TNFa FITC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD8 PerCP-Cy55 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="IL2 BV421 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Aqua Amine FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="IFNg APC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD3 APC-H7 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD107a PE FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD4 PE-Cy7 FLR-A" />
-         </transforms:logicle>
+         </transforms:linear>
          <transforms:linear transforms:minRange="0.8511997311"  transforms:maxRange="72"  gain="0.0100853049" >
            <data-type:parameter data-type:name="Time" />
          </transforms:linear>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-TNFa FITC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD8 PerCP-Cy55 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-IL2 BV421 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-Aqua Amine FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-IFNg APC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD3 APC-H7 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD107a PE FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD4 PE-Cy7 FLR-A" />
-         </transforms:logicle>
+         </transforms:linear>
        </Transformations>
        <Keywords>
          <Keyword name="FJ_FCS_VERSION"  value="3.1" />
@@ -3192,57 +3192,57 @@
          <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
            <data-type:parameter data-type:name="SSC-W" />
          </transforms:linear>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         <transforms:linear>
            <data-type:parameter data-type:name="TNFa FITC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD8 PerCP-Cy55 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="IL2 BV421 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Aqua Amine FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="IFNg APC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD3 APC-H7 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD107a PE FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD4 PE-Cy7 FLR-A" />
-         </transforms:logicle>
+         </transforms:linear>
          <transforms:linear transforms:minRange="1.021415373"  transforms:maxRange="65"  gain="0.0102654811" >
            <data-type:parameter data-type:name="Time" />
          </transforms:linear>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-TNFa FITC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD8 PerCP-Cy55 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-IL2 BV421 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-Aqua Amine FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-IFNg APC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD3 APC-H7 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD107a PE FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD4 PE-Cy7 FLR-A" />
-         </transforms:logicle>
+         </transforms:linear>
        </Transformations>
        <Keywords>
          <Keyword name="FJ_FCS_VERSION"  value="3.1" />
@@ -4020,57 +4020,57 @@
          <transforms:linear transforms:minRange="0"  transforms:maxRange="262144"  gain="1" >
            <data-type:parameter data-type:name="SSC-W" />
          </transforms:linear>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         <transforms:linear>
            <data-type:parameter data-type:name="TNFa FITC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD8 PerCP-Cy55 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="IL2 BV421 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Aqua Amine FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="IFNg APC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD3 APC-H7 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD107a PE FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="CD4 PE-Cy7 FLR-A" />
-         </transforms:logicle>
+         </transforms:linear>
          <transforms:linear transforms:minRange="1.2746832452"  transforms:maxRange="69"  gain="0.0101893145" >
            <data-type:parameter data-type:name="Time" />
          </transforms:linear>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-TNFa FITC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD8 PerCP-Cy55 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-IL2 BV421 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-Aqua Amine FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-IFNg APC FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD3 APC-H7 FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD107a PE FLR-A" />
-         </transforms:logicle>
-         <transforms:logicle transforms:length="256"  transforms:T="262144"  transforms:A="0"  transforms:W="1"  transforms:M="4.418539922" >
+         </transforms:linear>
+         <transforms:linear>
            <data-type:parameter data-type:name="Comp-CD4 PE-Cy7 FLR-A" />
-         </transforms:logicle>
+         </transforms:linear>
        </Transformations>
        <Keywords>
          <Keyword name="FJ_FCS_VERSION"  value="3.1" />
