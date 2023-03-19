@@ -5,7 +5,7 @@ using Interpolations, EzXML, MetaGraphs
 
 using PolygonOps, StaticArrays
 using Glob: glob
-using HTTP: escapeuri
+using URIs: escapeuri
 
 include("Groups.jl")
 include("Transforms.jl")
