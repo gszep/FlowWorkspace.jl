@@ -1,7 +1,7 @@
 name = "FlowWorkspace"
 uuid = "93705cf0-0d0c-4207-9085-aa3a02725bf0"
 authors = ["Grisha Szep", "Valerie Coppard", "Felix Feyertag"]
-version = "0.1.15"
+version = "0.1.16"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -21,7 +21,7 @@ EzXML = "1"
 FCSFiles = "^0.1.1"
 FileIO = "1"
 Glob = "1"
-Interpolations = "0.14"
+Interpolations = "0.13"
 MetaGraphs = "0.6, 0.7"
 PolygonOps = "0.1"
 StaticArrays = "1"
