@@ -9,6 +9,10 @@ function load(path::String, sample::Union{EzXML.Node,Nothing}; kwargs...)
     transform!(channels, ["N", "S"] => ByRow((N, S) -> ~ismissing(S) ? S != "" ? S : N : N) => "name")
     channelMap = Dict(param.N => ismissing(param.S) ? param.N : param.S for param ∈ eachrow(params))
 
+    # throw error listing duplicate channel names
+    duplicates = filter(x -> count(channels.name .== x) > 1, unique(channels.name))
+    @assert(isempty(duplicates), "Channel names must be unique. Please resolve duplicates: $duplicates")
+
     ###################################### biexponential transformation
     data = DataFrame(data, channels.name)
     transformationFunctions = transforms(sample; channelMap=channelMap)
@@ -79,7 +83,7 @@ end
 
 function findchannels(sample::EzXML.Node)
 
-    params = DataFrame("keyword" => findall("..//Keywords/Keyword[starts-with(@name,'\$P') and contains(@name,'N')]", sample))
+    params = DataFrame("keyword" => findall("..//Keywords/Keyword[starts-with(@name, '\$P') and substring(@name, string-length(@name)) = 'N' and translate(substring-before(substring(@name, 3), 'N'), '0123456789', '') = '']", sample))
     keys = ["G", "R", "V", "S", "B", "N", "E", "AR"]
 
     for key ∈ keys
