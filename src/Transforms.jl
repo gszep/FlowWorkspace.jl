@@ -126,6 +126,6 @@ end
 
 function log_table(; offset::Real=1, decades::Real=1, minRange::Real=0, maxRange::Real=262144)
     x = range(minRange, maxRange; step=1)
-    @. y = log10((x + offset) / decades)
+    y = @. log10((x + offset) / decades)
     return x, y
 end
