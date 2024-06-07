@@ -72,7 +72,7 @@ end
 function findsample(uri::String, workspace::EzXML.Node)
     uri = escapeuri(uri)
 
-    for code ∈ [("%2F" => "/"), ("%5C" => "\\"), ("%3A" => ":"), ("%2C" => ",")]
+    for code ∈ [("%2F" => "/"), ("%5C" => "\\"), ("%3A" => ":"), ("%2C" => ","), ("%2B" => "+")]
         uri = replace(uri, code)
     end
 
@@ -121,7 +121,7 @@ applies it to compensate the data.
 """
 function loadFCS(
     fn::String;
-    applyCompensation::Bool = true,
+    applyCompensation::Bool=true,
 )::Tuple{Dict{String,String},Matrix{Float64}}
     fcs = FileIO.load(fn)
     meta = getMetaData(fcs.params)

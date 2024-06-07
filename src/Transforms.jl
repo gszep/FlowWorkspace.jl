@@ -22,7 +22,7 @@ function linear(; params...)
 end
 
 function linear_table(; minRange::Real=0, maxRange::Real=262144, gain::Real=1)
-    x = range(minRange, maxRange)
+    x = range(minRange, maxRange; step=1)
     return x, gain * x
 end
 
@@ -53,7 +53,7 @@ function biex_table(; width::Real=-10, neg::Real=0, pos::Real=4.418540, maxRange
     negative_range = _log_root(positive_range, width)
 
     n_points = channelRange + 1
-    values = range(0, channelRange)
+    values = range(0, channelRange; step=1)
 
     positive = exp.(values / float(n_points) * positive_range)
     negative = exp.(-values / float(n_points) * negative_range)
@@ -65,7 +65,7 @@ function biex_table(; width::Real=-10, neg::Real=0, pos::Real=4.418540, maxRange
     positive[(zero_point+1):n_points] = positive[(zero_point+1):n_points] - negative[(zero_point+1):n_points]
     positive[(zero_point+1):n_points] = maxRange / exp(positive_range) * (positive[(zero_point+1):n_points] .- s)
 
-    neg_range = range(0, zero_point - 1)
+    neg_range = range(0, zero_point - 1; step=1)
     m = 2 * zero_point .- neg_range
 
     positive[neg_range.+1] = -positive[m.+1]
