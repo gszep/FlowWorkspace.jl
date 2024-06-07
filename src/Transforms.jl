@@ -49,7 +49,7 @@ function biex_table(; width::Real=-10, neg::Real=0, pos::Real=4.418540, maxRange
     end
 
     width = width / (2 * decades)
-    positive_range = log(10) * decades
+    positive_range = Base.log(10) * decades
     negative_range = _log_root(positive_range, width)
 
     n_points = channelRange + 1
@@ -78,8 +78,8 @@ function _log_root(b, w)
     d = (x_lo + x_hi) / 2
     dx = abs(round(Int, x_lo - x_hi))
     dx_last = dx
-    fb = -2 * log(b) + w * b
-    f = 2.0 * log(d) + w * b + fb
+    fb = -2 * Base.log(b) + w * b
+    f = 2.0 * Base.log(d) + w * b + fb
     df = 2 / d + w
 
     if w == 0
@@ -107,7 +107,7 @@ function _log_root(b, w)
         end
 
         dx_last = dx
-        f = 2 * log(d) + w * d + fb
+        f = 2 * Base.log(d) + w * d + fb
         df = 2 / d + w
         if f < 0
             x_lo = d
