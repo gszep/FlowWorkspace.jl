@@ -118,3 +118,13 @@ function _log_root(b, w)
 
     return d
 end
+
+"""FlowJo compatible log transformation function"""
+function log(; params...)
+    return LinearInterpolation(log_table(; params...)...; extrapolation_bc=Flat())
+end
+
+function log_table(; offset::Real=1, decades::Real=1, minRange::Real=0, maxRange::Real=262144)
+    x = range(minRange, maxRange; step=1)
+    return x, log10((x .+ offset) ./ decades)
+end
